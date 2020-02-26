@@ -19,18 +19,79 @@ public class Stock implements EPOS {
     private String category;
 
     @Column(name = "stock_perishable")
-    private String perishable;
+    private boolean perishable;
 
     @Column (name = "stock_cost")
-    private String cost;
+    private float cost;
 
     @Column (name = "stock_remaining_stock")
-    private String remaining_stock;
+    private int remaining_stock;
 
     @Column (name = "stock_sell_price")
-    private String sell_price;
+    private float sell_price;
 
+    public Stock(int id, String name, String category,
+                 boolean perishable, float cost, int remaining_stock, float sell_price) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.perishable = perishable;
+        this.cost = cost;
+        this.remaining_stock = remaining_stock;
+        this.sell_price = sell_price;
+    }
 
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public boolean isPerishable() {
+        return perishable;
+    }
+
+    public void setPerishable(boolean perishable) {
+        this.perishable = perishable;
+    }
+
+    public float getCost() {
+        return cost;
+    }
+
+    public void setCost(float cost) {
+        this.cost = cost;
+    }
+
+    public int getRemaining_stock() {
+        return remaining_stock;
+    }
+
+    public void setRemaining_stock(int remaining_stock) {
+        this.remaining_stock = remaining_stock;
+    }
+
+    public float getSell_price() {
+        return sell_price;
+    }
+
+    public void setSell_price(float sell_price) {
+        this.sell_price = sell_price;
+    }
 
     @Override
     public void countStock() {
