@@ -1,6 +1,8 @@
 package csc1035.project3;
 
 public class Stock implements EPOS {
+    // Test
+
     @Override
     public void countStock() {
 
