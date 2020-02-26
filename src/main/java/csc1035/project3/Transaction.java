@@ -1,4 +1,8 @@
 package csc1035.project3;
+import org.hibernate.HibernateError;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+
 import javax.persistence.*;
 
 @Entity
@@ -59,8 +63,19 @@ public class Transaction implements EPOS{
 
     }
 
+    @Override
     public void customerTransaction(){
-        System.out.println();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try{
+            session.beginTransaction();
+            session.save(this);
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            if (session != null) session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
     }
 
     @Override
