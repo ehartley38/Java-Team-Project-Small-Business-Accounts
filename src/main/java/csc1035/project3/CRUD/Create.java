@@ -6,27 +6,15 @@ import csc1035.project3.Stock;
 
 public class Create {
 
-    Stock fortnite;
-    Stock apex;
-
-    public Create() {
-
-        fortnite = new Stock(1, "Fortnite", "Video_Games", false, 99.99f, 10,
-                12.99f);
-
-        apex = new Stock(2, "Apex", "Video_Games", false, 89.99f, 8,
-                9.99f);
-
+    public void add(String name, String category, boolean perishable, float cost, int remaining_stock, float sell_price) {
+        Stock stockToAdd = new Stock(name, category, perishable, cost, remaining_stock, sell_price);
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-        session.save(fortnite);
-        session.save(apex);
+        session.save(stockToAdd);
         session.getTransaction().commit();
         session.close();
+
     }
 
-    public Stock getFortnite() {
-        return fortnite;
-    }
 
 }

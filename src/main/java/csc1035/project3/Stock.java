@@ -9,7 +9,7 @@ public class Stock implements EPOS {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sid", updatable = false, nullable = false)
-    private final int id;
+    private int id;
 
     @Column(name = "stock_name")
     private String name;
@@ -29,9 +29,8 @@ public class Stock implements EPOS {
     @Column (name = "stock_sell_price")
     private float sell_price;
 
-    public Stock(int id, String name, String category,
+    public Stock(String name, String category,
                  boolean perishable, float cost, int remaining_stock, float sell_price) {
-        this.id = id;
         this.name = name;
         this.category = category;
         this.perishable = perishable;
