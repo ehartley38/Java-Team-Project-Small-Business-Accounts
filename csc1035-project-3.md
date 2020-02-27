@@ -65,7 +65,7 @@ From the previous client explanation, the client would like the following:
 - Electronic Point of Sale (EPOS) program
 - An EPOS that has a count of available stock
 - An EPOS that allows for customer transaction of stock, including a cost of the
-product, the amount of money given by the customer and the change given back to
+product, the amount of money given by the customer and the change_given given back to
 the client
 - A way of producing a receipt of the transaction in the EPOS system
 - A way of updating stock outside of a transaction

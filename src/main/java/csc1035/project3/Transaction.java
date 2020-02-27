@@ -1,33 +1,34 @@
 package csc1035.project3;
-import org.hibernate.HibernateError;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "Transaction") // Table name
+@Entity(name = "Transaction") // Table name
 public class Transaction implements EPOS{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "tID", updatable = false, nullable = false)
-    private final int id;
+    @Column(updatable = false, nullable = false)
+    private int id;
 
-    @Column(name = "Cost")
+    @Column
     private float cost;
 
-    @Column(name = "Money Given")
+    @Column
     private float money_given;
 
-    @Column (name = "Change")
-    private float change;
+    @Column
+    private float change_given;
 
-    public Transaction(int id, float cost, float money_given, float change){
-        this.id = id;
+    public Transaction(float cost, float money_given, float change_given){
         this.cost = cost;
         this.money_given = money_given;
-        this.change = change;
+        this.change_given = change_given;
+    }
+
+    public Transaction() {
+
     }
 
     public int getId() {
@@ -50,12 +51,12 @@ public class Transaction implements EPOS{
         this.money_given = money_given;
     }
 
-    public float getChange() {
-        return change;
+    public float getChange_given() {
+        return change_given;
     }
 
-    public void setChange(float change) {
-        this.change = change;
+    public void setChange_given(float change_given) {
+        this.change_given = change_given;
     }
 
     @Override
@@ -67,16 +68,16 @@ public class Transaction implements EPOS{
     public void customerTransaction(){
         Session session = HibernateUtil.getSessionFactory().openSession();
         try{
-            session.beginTransaction();
-            session.save(this);
-            session.getTransaction().commit();
-        } catch (HibernateException e) {
-            if (session != null) session.getTransaction().rollback();
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
+        session.beginTransaction();
+        session.save(this);
+        session.getTransaction().commit();
+    } catch (HibernateException e) {
+        if (session != null) session.getTransaction().rollback();
+        e.printStackTrace();
+    } finally {
+        session.close();
     }
+}
 
     @Override
     public void generateReceipt() {
