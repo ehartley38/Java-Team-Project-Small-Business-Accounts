@@ -10,7 +10,6 @@ public class Main {
 
         System.out.println(create.getFortnite().getId());
 
-
     }
 
 }
