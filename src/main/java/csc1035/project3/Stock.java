@@ -3,7 +3,6 @@ package csc1035.project3;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Stock")
 
 public class Stock implements EPOS {
 
