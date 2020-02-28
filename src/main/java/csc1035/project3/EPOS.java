@@ -10,7 +10,7 @@ interface EPOS {
     /**
      * Allows for a customer transaction of stock.
      */
-    void customerTransaction();
+    void addCustomerTransaction();
 
     /**
      * Produces a receipt of a transaction.
