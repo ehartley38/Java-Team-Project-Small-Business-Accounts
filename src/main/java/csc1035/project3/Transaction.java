@@ -65,7 +65,7 @@ public class Transaction implements EPOS{
     }
 
     @Override
-    public void customerTransaction(){
+    public void addCustomerTransaction(){
         Session session = HibernateUtil.getSessionFactory().openSession();
         try{
         session.beginTransaction();
