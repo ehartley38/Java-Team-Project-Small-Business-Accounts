@@ -12,6 +12,7 @@ public class Main {
         crud.create("The-Witcher-3", "Video_Games", false, 99.99f, 10,
                 12.99f);
 
+        crud.read("The-Witcher-3");
     }
 
 }

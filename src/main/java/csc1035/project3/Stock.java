@@ -39,6 +39,9 @@ public class Stock implements EPOS {
         this.sell_price = sell_price;
     }
 
+    public Stock() {
+    }
+
     public int getId() {
         return id;
     }
