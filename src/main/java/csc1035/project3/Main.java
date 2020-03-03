@@ -22,6 +22,8 @@ public class Main {
 
         crud.getSid("PUBG");
 
+        crud.update(13, "stock_sell_price", "99.99" );
+
 
 
 

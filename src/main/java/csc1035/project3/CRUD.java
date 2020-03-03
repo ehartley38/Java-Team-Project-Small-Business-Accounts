@@ -24,21 +24,7 @@ public class CRUD {
         }
     }
 
-    public boolean checkDuplicates() {
 
-        List stock = session.createQuery("FROM Stock").list();
-        ArrayList<String> checkedNames = new ArrayList<String>();
-
-        for (Iterator<Stock> iterator = stock.iterator(); iterator.hasNext();) {
-            Stock item = (Stock) iterator.next();
-            if (checkedNames.contains(item.getName())) {
-                return true;
-            }
-            checkedNames.add(item.getName());
-        }
-        return false;
-
-    }
     public void read(String name) {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
@@ -58,6 +44,39 @@ public class CRUD {
         }
     }
 
+    public void update(int id, String columnName, String newValue) {
+        session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        Stock item = (session.get(Stock.class, id));
+        switch (columnName) {
+            case "stock_category":
+                item.setCategory(newValue);
+                break;
+            case "stock_cost":
+                item.setCost(Float.parseFloat(newValue));
+                break;
+            case "stock_name":
+                item.setName(newValue);
+                break;
+            case "stock_perishable":
+                item.setPerishable(Boolean.parseBoolean(newValue));
+                break;
+            case "stock_remaining_stock":
+                item.setRemaining_stock(Integer.parseInt(newValue));
+                break;
+            case "stock_sell_price":
+                item.setSell_price(Float.parseFloat(newValue));
+                break;
+            default:
+                System.out.println("Not a valid column name");
+                break;
+        }
+        session.update(item);
+        session.getTransaction().commit();
+        }
+
+
+
     public void getSid(String name) {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
@@ -75,5 +94,21 @@ public class CRUD {
         } finally {
             session.close();
         }
+    }
+
+    public boolean checkDuplicates() {
+
+        List stock = session.createQuery("FROM Stock").list();
+        ArrayList<String> checkedNames = new ArrayList<String>();
+
+        for (Iterator<Stock> iterator = stock.iterator(); iterator.hasNext();) {
+            Stock item = (Stock) iterator.next();
+            if (checkedNames.contains(item.getName())) {
+                return true;
+            }
+            checkedNames.add(item.getName());
+        }
+        return false;
+
     }
 }
