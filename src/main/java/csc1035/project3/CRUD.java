@@ -15,8 +15,7 @@ public class CRUD {
         Stock stockToAdd = new Stock(name, category, perishable, cost, remaining_stock, sell_price);
         session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-
-        if (!checkDuplicates(name)) {
+        if (!checkDuplicates()) {
             session.save(stockToAdd);
             session.getTransaction().commit();
             session.close();
@@ -25,6 +24,21 @@ public class CRUD {
         }
     }
 
+    public boolean checkDuplicates() {
+
+        List stock = session.createQuery("FROM Stock").list();
+        ArrayList<String> checkedNames = new ArrayList<String>();
+
+        for (Iterator<Stock> iterator = stock.iterator(); iterator.hasNext();) {
+            Stock item = (Stock) iterator.next();
+            if (checkedNames.contains(item.getName())) {
+                return true;
+            }
+            checkedNames.add(item.getName());
+        }
+        return false;
+
+    }
     public void read(String name) {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
@@ -44,17 +58,22 @@ public class CRUD {
         }
     }
 
-    private boolean checkDuplicates(String name) {
-
-        List stock = session.createQuery("FROM Stock").list();
-
-        for (Stock item : (Iterable<Stock>) stock) {
-            if (item.getName().equals(name)) {
-                return true;
+    public void getSid(String name) {
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            List items = session.createQuery("FROM Stock").list();
+            for (Iterator<Stock> iterator = items.iterator(); iterator.hasNext();){
+                Stock stock = iterator.next();
+                if (stock.getName().equals(name))
+                    System.out.println("The item's ID: " + stock.getId());
             }
-
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            if (session!=null) session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
         }
-        return false;
     }
-
 }
