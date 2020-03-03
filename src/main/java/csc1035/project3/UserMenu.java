@@ -45,8 +45,24 @@ public class UserMenu implements EPOS {
     }
 
     @Override
-    public void addCustomerTransaction() {
+    public void addCustomerTransaction() throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
+        System.out.println("Please enter the cost of the product:");
+        String costInput = reader.readLine() + "f";
+        float cost = Float.parseFloat(costInput);
+
+        System.out.println("Please enter the amount of money given:");
+        String moneyGivenInput = reader.readLine() + "f";
+        float moneyGiven = Float.parseFloat(moneyGivenInput);
+
+        System.out.println("Please enter the amount of change given back:");
+        String changeGivenInput = reader.readLine() + "f";
+        float changeGiven = Float.parseFloat(changeGivenInput);
+
+        Transaction newTransaction = new Transaction(cost, moneyGiven, changeGiven);
+        newTransaction.addCustomerTransaction();
+        newTransaction.generateReceipt();
     }
 
     @Override
