@@ -101,8 +101,8 @@ public class CRUD {
         List stock = session.createQuery("FROM Stock").list();
         ArrayList<String> checkedNames = new ArrayList<String>();
 
-        for (Iterator<Stock> iterator = stock.iterator(); iterator.hasNext();) {
-            Stock item = (Stock) iterator.next();
+        for (Stock o : (Iterable<Stock>) stock) {
+            Stock item = (Stock) o;
             if (checkedNames.contains(item.getName())) {
                 return true;
             }
