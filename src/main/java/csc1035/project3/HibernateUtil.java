@@ -1,5 +1,4 @@
 package csc1035.project3;
-
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
