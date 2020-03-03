@@ -4,9 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class UserMenu {
+public class UserMenu implements EPOS {
 
-    public static void menu() throws IOException {
+    public void menu() throws IOException {
         String option;
         System.out.println("Welcome to the Tricky Trinkets EPOS system.");
         System.out.println("Please select an option:");
@@ -20,10 +20,10 @@ public class UserMenu {
 
         switch(option){
             case "a":
-                viewStock();
+                countStock();
                 break;
             case "b":
-                makeTransaction();
+                addCustomerTransaction();
                 break;
             case "c":
                 generateReceipt();
@@ -39,19 +39,23 @@ public class UserMenu {
         }
     }
 
-    public static void viewStock(){
+    @Override
+    public void countStock() {
 
     }
 
-    public static void makeTransaction(){
+    @Override
+    public void addCustomerTransaction() {
 
     }
 
-    public static void generateReceipt(){
+    @Override
+    public void generateReceipt() {
 
     }
 
-    public static void updateStock() {
+    @Override
+    public void updateStock() {
 
     }
 }
