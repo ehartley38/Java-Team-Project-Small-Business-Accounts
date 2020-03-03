@@ -1,5 +1,7 @@
 package csc1035.project3;
 
+import java.io.IOException;
+
 interface EPOS {
 
     /**
@@ -20,6 +22,6 @@ interface EPOS {
     /**
      * Allows stock to be updated outside of a transaction.
      */
-    void updateStock();
+    void updateStock() throws IOException;
 
 }
