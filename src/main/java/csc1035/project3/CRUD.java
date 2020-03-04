@@ -74,7 +74,7 @@ public class CRUD {
         session.getTransaction().commit();
     }
 
-    public void delete(int id) {
+    public void deleteById(int id) {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -86,6 +86,26 @@ public class CRUD {
             }
             session.getTransaction().commit();
             System.out.println("Item with an id " + id + " was deleted from the table.");
+        } catch (HibernateException e) {
+            if (session!=null) session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    public void deleteByName(String name) {
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            List items = session.createQuery("FROM Stock").list();
+            for (Iterator<Stock> iterator = items.iterator(); iterator.hasNext();){
+                Stock stock = iterator.next();
+                if (stock.getName().equals(name))
+                    session.delete(stock);
+            }
+            session.getTransaction().commit();
+            System.out.println(name + " was deleted from stock table.");
         } catch (HibernateException e) {
             if (session!=null) session.getTransaction().rollback();
             e.printStackTrace();
@@ -128,11 +148,6 @@ public class CRUD {
             return false;
         }
 
-
-        }
-
-
-
-
+    }
 
 }
