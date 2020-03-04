@@ -15,6 +15,7 @@
         <property name="hbm2ddl.auto">update </property>
 
         <mapping class="csc1035.project3.Stock" /> <!--- Add a new mapping class for a new table in the database -->
-
+        <mapping class="csc1035.project3.Transaction" /> <!--- Add a new mapping class for a new table in the database -->
+        
     </session-factory>
 </hibernate-configuration>
