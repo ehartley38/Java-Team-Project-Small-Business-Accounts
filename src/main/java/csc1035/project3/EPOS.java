@@ -1,5 +1,7 @@
 package csc1035.project3;
 
+import java.io.IOException;
+
 interface EPOS {
 
     /**
@@ -10,7 +12,7 @@ interface EPOS {
     /**
      * Allows for a customer transaction of stock.
      */
-    void addCustomerTransaction();
+    void addCustomerTransaction() throws IOException;
 
     /**
      * Produces a receipt of a transaction.
