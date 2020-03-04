@@ -20,7 +20,7 @@ public class CRUD {
             session.getTransaction().commit();
             session.close();
         } else {
-          System.out.println("Item already in stock");
+            System.out.println("Item already in stock");
         }
     }
 
@@ -73,9 +73,27 @@ public class CRUD {
         }
         session.update(item);
         session.getTransaction().commit();
+    }
+
+    public void delete(int id) {
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            List items = session.createQuery("FROM Stock").list();
+            for (Iterator<Stock> iterator = items.iterator(); iterator.hasNext();){
+                Stock stock = iterator.next();
+                if (stock.getId() == id)
+                    session.delete(stock);
+            }
+            session.getTransaction().commit();
+            System.out.println("Item with an id " + id + " was deleted from the table.");
+        } catch (HibernateException e) {
+            if (session!=null) session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
         }
-
-
+    }
 
     public void getSid(String name) {
         try {
