@@ -1,8 +1,10 @@
 package csc1035.project3;
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "Transaction") // Table name
 public class Transaction {
@@ -74,6 +76,31 @@ public class Transaction {
     }
 
     public void generateReceipt() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try{
+            session.beginTransaction();
+            Query query = session.createQuery("select i.id, i.cost, i.change_given from Transaction i ");
+
+            List results = ((org.hibernate.query.Query) query).list();
+
+            session.getTransaction().commit();
+
+            Object[] items = results.toArray();
+
+            for (int i = 0; i <items.length ; i++) {
+                Object[] tmp = (Object[]) items[i];
+                for (int j = 0; j < tmp.length ; j++) {
+                    System.out.print(tmp[j]+" ");
+                }
+                System.out.println();
+            }
+        } catch (HibernateException e) {
+            if (session != null) session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
 
     }
 }
