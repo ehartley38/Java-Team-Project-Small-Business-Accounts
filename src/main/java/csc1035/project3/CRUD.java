@@ -15,7 +15,7 @@ public class CRUD {
         Stock stockToAdd = new Stock(name, category, perishable, cost, remaining_stock, sell_price);
         session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-        if (!checkDuplicates()) {
+        if (!checkDuplicates(name)) {
             session.save(stockToAdd);
             session.getTransaction().commit();
             session.close();
@@ -30,8 +30,7 @@ public class CRUD {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             List items = session.createQuery("FROM Stock").list();
-            for (Iterator<Stock> iterator = items.iterator(); iterator.hasNext();){
-                Stock stock = iterator.next();
+            for (Stock stock : (Iterable<Stock>) items) {
                 if (stock.getName().equals(name))
                     System.out.println("Remaining Stock: " + stock.getRemaining_stock());
             }
@@ -100,8 +99,7 @@ public class CRUD {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             List items = session.createQuery("FROM Stock").list();
-            for (Iterator<Stock> iterator = items.iterator(); iterator.hasNext();){
-                Stock stock = iterator.next();
+            for (Stock stock : (Iterable<Stock>) items) {
                 if (stock.getName().equals(name))
                     System.out.println("The item's ID: " + stock.getId());
             }
@@ -114,19 +112,27 @@ public class CRUD {
         }
     }
 
-    public boolean checkDuplicates() {
+    public boolean checkDuplicates(String name) {
 
         List stock = session.createQuery("FROM Stock").list();
-        ArrayList<String> checkedNames = new ArrayList<String>();
+        ArrayList<String> names = new ArrayList<String>();
 
         for (Stock o : (Iterable<Stock>) stock) {
             Stock item = (Stock) o;
-            if (checkedNames.contains(item.getName())) {
-                return true;
-            }
-            checkedNames.add(item.getName());
+            names.add(item.getName());
         }
-        return false;
 
-    }
+        if (names.contains(name)) {
+            return true;
+        } else {
+            return false;
+        }
+
+
+        }
+
+
+
+
+
 }

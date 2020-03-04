@@ -25,14 +25,17 @@ public class Main {
 
         crud.update(13, "stock_sell_price", "99.99" );*/
 
+
+
+        crud.create("Barbie Dreamhouse Party", "Video_Games", false, 99.99f, 34,
+                12.99f);
+
+        crud.create("The-Witcher-3", "Video_Games", false, 99.99f, 10,
+                12.99f);
+
         crud.create("CS:GO", "Video_Games", false, 99.99f, 10,
                 12.99f);
 
-        crud.create("Barbie Dreamhouse Party", "Video_Games", false, 99.99f, 10,
-                12.99f);
-
-        crud.create("Rocket League", "Video_Games", false, 99.99f, 10,
-                12.99f);
 
 
 
