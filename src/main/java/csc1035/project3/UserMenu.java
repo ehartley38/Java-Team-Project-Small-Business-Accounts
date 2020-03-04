@@ -127,11 +127,28 @@ public class UserMenu implements EPOS {
 
     private void removeItem() throws IOException{
         int ID;
-        System.out.println("Enter ID of an item that you want to remove: ");
-        BufferedReader idReader = new BufferedReader(new InputStreamReader(System.in));
-        ID = Integer.parseInt(idReader.readLine());
-        CRUD crud = new CRUD();
-        crud.delete(ID);
+        String name;
+        String option;
+        System.out.println("Do you want to delete an item using name or id?: ");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        option = reader.readLine().toLowerCase();
+        switch (option) {
+            case "name":
+                System.out.println("Enter the name of an item that you want to remove: ");
+                BufferedReader nameReader = new BufferedReader(new InputStreamReader(System.in));
+                name = nameReader.readLine();
+                CRUD nameCrud = new CRUD();
+                nameCrud.deleteByName(name);
+            case "id":
+                System.out.println("Enter ID of an item that you want to remove: ");
+                BufferedReader idReader = new BufferedReader(new InputStreamReader(System.in));
+                ID = Integer.parseInt(idReader.readLine());
+                CRUD idCrud = new CRUD();
+                idCrud.deleteById(ID);
+            default:
+                System.out.println("You can only choose between name and id");
+                removeItem();
+        }
     }
 
     private void updateItem() throws IOException{
