@@ -1,9 +1,14 @@
 package csc1035.project3;
 
+import org.hibernate.Session;
+
+import javax.persistence.*;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.DataInputStream;
+import java.util.List;
 
 public class UserMenu implements EPOS {
 
@@ -49,23 +54,44 @@ public class UserMenu implements EPOS {
     public void addCustomerTransaction() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        System.out.println("Please enter the cost of the product:");
-        String costInput = reader.readLine() + "f";
-        float cost = Float.parseFloat(costInput);
+        boolean itemFound = false;
+        float cost = 0f; //Dummy value.
+        CRUD crud = new CRUD();
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        s.beginTransaction();
+        List items = s.createQuery("From Stock").list();
+        s.getTransaction().commit();
 
-        System.out.println("Please enter the amount of money given:");
-        String moneyGivenInput = reader.readLine() + "f";
-        float moneyGiven = Float.parseFloat(moneyGivenInput);
+        System.out.println("Please enter the first item of the transaction.");
+        String transactionItemString = reader.readLine();
+        for (Stock stock : (Iterable<Stock>) items) {
+            if (transactionItemString.equals(stock.getName())) {
+                itemFound = true;
+                if (stock.getRemaining_stock() > 0) {
+                    cost += stock.getSell_price();
+                    crud.update(stock.getId(), "stock_remaining_stock", Integer.toString(stock.getRemaining_stock() - 1));
 
-        System.out.println("Please enter the amount of change given back:");
-        String changeGivenInput = reader.readLine() + "f";
-        float changeGiven = Float.parseFloat(changeGivenInput);
+                    System.out.println("Please enter the amount of money given:");
+                    String moneyGivenInput = reader.readLine() + "f";
+                    float moneyGiven = Float.parseFloat(moneyGivenInput);
 
-        Transaction newTransaction = new Transaction(cost, moneyGiven, changeGiven);
-        newTransaction.addCustomerTransaction();
-        newTransaction.generateReceipt();
+                    System.out.println("Please enter the amount of change given back:");
+                    String changeGivenInput = reader.readLine() + "f";
+                    float changeGiven = Float.parseFloat(changeGivenInput);
+
+                    Transaction newTransaction = new Transaction(cost, moneyGiven, changeGiven);
+                    newTransaction.addCustomerTransaction();
+                    newTransaction.generateReceipt();
+                } else {
+                    System.out.println("ITEM " + stock.getName() + " OUT OF STOCK.");
+                }
+            }
+        }
+
+        if (!itemFound) {
+            System.out.println("ITEM " + transactionItemString + " NOT FOUND.");
+        }
     }
-
     @Override
     public void generateReceipt() {
 

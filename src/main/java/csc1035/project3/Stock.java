@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 
-public class Stock implements EPOS {
+public class Stock {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,13 +20,13 @@ public class Stock implements EPOS {
     @Column(name = "stock_perishable")
     private boolean perishable;
 
-    @Column (name = "stock_cost")
+    @Column(name = "stock_cost")
     private float cost;
 
-    @Column (name = "stock_remaining_stock")
+    @Column(name = "stock_remaining_stock")
     private int remaining_stock;
 
-    @Column (name = "stock_sell_price")
+    @Column(name = "stock_sell_price")
     private float sell_price;
 
     public Stock(String name, String category,
@@ -92,25 +92,5 @@ public class Stock implements EPOS {
 
     public void setSell_price(float sell_price) {
         this.sell_price = sell_price;
-    }
-
-    @Override
-    public void countStock() {
-
-    }
-
-    @Override
-    public void customerTransaction() {
-
-    }
-
-    @Override
-    public void generateReceipt() {
-
-    }
-
-    @Override
-    public void updateStock() {
-
     }
 }
