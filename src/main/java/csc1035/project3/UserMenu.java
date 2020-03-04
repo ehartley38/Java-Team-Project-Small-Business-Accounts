@@ -139,12 +139,14 @@ public class UserMenu implements EPOS {
                 name = nameReader.readLine();
                 CRUD nameCrud = new CRUD();
                 nameCrud.deleteByName(name);
+                break;
             case "id":
                 System.out.println("Enter ID of an item that you want to remove: ");
                 BufferedReader idReader = new BufferedReader(new InputStreamReader(System.in));
                 ID = Integer.parseInt(idReader.readLine());
                 CRUD idCrud = new CRUD();
                 idCrud.deleteById(ID);
+                break;
             default:
                 System.out.println("You can only choose between name and id");
                 removeItem();
