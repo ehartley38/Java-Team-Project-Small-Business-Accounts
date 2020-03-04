@@ -3,6 +3,7 @@ package csc1035.project3;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.DataInputStream;
 
 public class UserMenu implements EPOS {
 
@@ -94,12 +95,43 @@ public class UserMenu implements EPOS {
         }
     }
 
-    private void addItem(){
-
+    private void addItem() throws IOException{
+        String name;
+        String category;
+        boolean perishable;
+        float cost;
+        int remaining_stock;
+        float sell_price;
+        String perishableString;
+        System.out.println("Item's name: ");
+        BufferedReader nameReader = new BufferedReader(new InputStreamReader(System.in));
+        name = nameReader.readLine();
+        System.out.println("Item's category: ");
+        BufferedReader categoryReader = new BufferedReader(new InputStreamReader(System.in));
+        category = categoryReader.readLine();
+        System.out.println("Is the item perishable (true or false): ");
+        BufferedReader perishReader = new BufferedReader(new InputStreamReader(System.in));
+        perishable = Boolean.parseBoolean(perishReader.readLine());
+        System.out.println("Item's cost: ");
+        BufferedReader costReader = new BufferedReader(new InputStreamReader(System.in));
+        cost = Float.parseFloat(costReader.readLine() + "f");
+        System.out.println("Item's stock: ");
+        BufferedReader stockReader = new BufferedReader(new InputStreamReader(System.in));
+        remaining_stock = Integer.parseInt(stockReader.readLine());
+        System.out.println("Item's sell price: ");
+        BufferedReader priceReader = new BufferedReader(new InputStreamReader(System.in));
+        sell_price = Float.parseFloat(priceReader.readLine() + "f");
+        CRUD crud = new CRUD();
+        crud.create(name, category, perishable, cost, remaining_stock, sell_price);
     }
 
-    private void removeItem(){
-
+    private void removeItem() throws IOException{
+        int ID;
+        System.out.println("Enter ID of an item that you want to remove: ");
+        BufferedReader idReader = new BufferedReader(new InputStreamReader(System.in));
+        ID = Integer.parseInt(idReader.readLine());
+        CRUD crud = new CRUD();
+        crud.delete(ID);
     }
 
     private void updateItem() throws IOException{
@@ -115,5 +147,7 @@ public class UserMenu implements EPOS {
         System.out.println("Enter a new value: ");
         BufferedReader newValueReader = new BufferedReader(new InputStreamReader(System.in));
         newValue = newValueReader.readLine();
+        CRUD crud = new CRUD();
+        crud.update(ID, column, newValue);
     }
 }
