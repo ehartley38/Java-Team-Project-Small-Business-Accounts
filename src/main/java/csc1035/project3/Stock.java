@@ -93,5 +93,4 @@ public class Stock {
     public void setSell_price(float sell_price) {
         this.sell_price = sell_price;
     }
-
 }

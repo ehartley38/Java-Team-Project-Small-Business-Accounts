@@ -1,9 +1,14 @@
 package csc1035.project3;
 
+import org.hibernate.Session;
+
+import javax.persistence.*;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.DataInputStream;
+import java.util.List;
 
 public class UserMenu implements EPOS {
 
@@ -45,13 +50,50 @@ public class UserMenu implements EPOS {
 
     }
 
+    private static float addItemToTransaction(float cost, List items) throws IOException {
+        boolean itemFound = false;
+        CRUD crud = new CRUD();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+        System.out.println("Please enter the next item of the transaction.");
+        String transactionItemString = reader.readLine();
+        for (Stock stock : (Iterable<Stock>) items) {
+            if (transactionItemString.equals(stock.getName())) {
+                itemFound = true;
+                if (stock.getRemaining_stock() > 0) {
+                    cost += stock.getSell_price();
+                    crud.update(stock.getId(), "stock_remaining_stock", Integer.toString(stock.getRemaining_stock() - 1));
+
+                } else {
+                    System.out.println("ITEM " + stock.getName() + " OUT OF STOCK.");
+                }
+
+                if (!itemFound) {
+                    System.out.println("ITEM " + transactionItemString + " NOT FOUND.");
+                }
+            }
+        }
+        return cost;
+    }
+
     @Override
     public void addCustomerTransaction() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        boolean end = false;
+        String checkForEnd;
+        float cost = 0f; //Dummy value.
+        Session s = HibernateUtil.getSessionFactory().openSession();
 
-        System.out.println("Please enter the cost of the product:");
-        String costInput = reader.readLine() + "f";
-        float cost = Float.parseFloat(costInput);
+        s.beginTransaction();
+        List items = s.createQuery("From Stock").list();
+        while (!end){
+            cost = addItemToTransaction(cost, items);
+            System.out.println("Would you like to add another item to this transaction? (y/n)");
+            checkForEnd = reader.readLine().toLowerCase();
+            if (checkForEnd.equals("n")){
+                end = true;
+            }
+        }
 
         System.out.println("Please enter the amount of money given:");
         String moneyGivenInput = reader.readLine() + "f";
@@ -64,8 +106,10 @@ public class UserMenu implements EPOS {
         Transaction newTransaction = new Transaction(cost, moneyGiven, changeGiven);
         newTransaction.addCustomerTransaction();
         newTransaction.generateReceipt();
-    }
 
+        s.getTransaction().commit();
+        s.close();
+    }
     @Override
     public void generateReceipt() {
 
