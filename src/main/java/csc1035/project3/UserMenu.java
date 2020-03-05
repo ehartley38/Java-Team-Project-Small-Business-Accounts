@@ -99,7 +99,7 @@ public class UserMenu implements EPOS {
 
         Transaction newTransaction = new Transaction(cost, moneyGiven, changeGiven);
         newTransaction.addCustomerTransaction();
-        newTransaction.generateReceipt();
+        newTransaction.generateReceipt(newTransaction.getId());
 
         s.getTransaction().commit();
         s.close();
