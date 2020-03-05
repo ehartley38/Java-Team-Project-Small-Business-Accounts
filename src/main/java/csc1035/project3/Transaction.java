@@ -75,32 +75,33 @@ public class Transaction {
         }
     }
 
-    public void generateReceipt() {
+    public void generateReceipt(int id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try{
             session.beginTransaction();
-            Query query = session.createQuery("select i.id, i.cost, i.change_given from Transaction i ");
+            Transaction receipt = session.getReference(Transaction.class, id);
+            String id2 = Integer.toString(receipt.getId());
+            String cost = String.valueOf(receipt.getCost());
+            String moneyGiven = String.valueOf(receipt.getMoney_given());
+            String changeGiven = String.valueOf(receipt.getChange_given());
 
-            List results = ((org.hibernate.query.Query) query).list();
 
+            String leftAlignFormat = " |%-16s | %-8s | %-11s | %-12s | %n ";
+
+            System.out.format(" +-----------------+----------+-------------+--------------+%n");
+            System.out.format(" | Transaction ID  | Cost     | Money Given | Change Given |%n");
+            System.out.format(" +-----------------+----------+-------------+--------------|%n");
+            System.out.format(leftAlignFormat, id2, cost, moneyGiven,
+                    changeGiven);
+            System.out.format("+-----------------+----------+-------------+--------------+%n");
             session.getTransaction().commit();
 
-            Object[] items = results.toArray();
-
-            for (int i = 0; i <items.length ; i++) {
-                Object[] tmp = (Object[]) items[i];
-                for (int j = 0; j < tmp.length ; j++) {
-                    System.out.print(tmp[j]+" ");
-                }
-                System.out.println();
-            }
         } catch (HibernateException e) {
             if (session != null) session.getTransaction().rollback();
             e.printStackTrace();
         } finally {
             session.close();
         }
-
 
     }
 }
