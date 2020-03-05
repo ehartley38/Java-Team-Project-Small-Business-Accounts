@@ -43,10 +43,41 @@ public class CRUD {
         }
     }
 
-    public void update(int id, String columnName, String newValue) {
+    public void updateById(int id, String columnName, String newValue) {
         session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         Stock item = (session.get(Stock.class, id));
+        switch (columnName) {
+            case "stock_category":
+                item.setCategory(newValue);
+                break;
+            case "stock_cost":
+                item.setCost(Float.parseFloat(newValue));
+                break;
+            case "stock_name":
+                item.setName(newValue);
+                break;
+            case "stock_perishable":
+                item.setPerishable(Boolean.parseBoolean(newValue));
+                break;
+            case "stock_remaining_stock":
+                item.setRemaining_stock(Integer.parseInt(newValue));
+                break;
+            case "stock_sell_price":
+                item.setSell_price(Float.parseFloat(newValue));
+                break;
+            default:
+                System.out.println("Not a valid column name");
+                break;
+        }
+        session.update(item);
+        session.getTransaction().commit();
+    }
+
+    public void updateByName(String name, String columnName, String newValue) {
+        session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        Stock item = (session.get(Stock.class, name));
         switch (columnName) {
             case "stock_category":
                 item.setCategory(newValue);
@@ -99,8 +130,7 @@ public class CRUD {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             List items = session.createQuery("FROM Stock").list();
-            for (Iterator<Stock> iterator = items.iterator(); iterator.hasNext();){
-                Stock stock = iterator.next();
+            for (Stock stock : (Iterable<Stock>) items) {
                 if (stock.getName().equals(name))
                     session.delete(stock);
             }
@@ -138,15 +168,11 @@ public class CRUD {
         ArrayList<String> names = new ArrayList<String>();
 
         for (Stock o : (Iterable<Stock>) stock) {
-            Stock item = (Stock) o;
+            Stock item = o;
             names.add(item.getName());
         }
 
-        if (names.contains(name)) {
-            return true;
-        } else {
-            return false;
-        }
+        return names.contains(name);
 
     }
 
