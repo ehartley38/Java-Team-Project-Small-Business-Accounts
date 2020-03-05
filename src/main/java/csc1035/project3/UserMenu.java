@@ -50,19 +50,12 @@ public class UserMenu implements EPOS {
 
     }
 
-    @Override
-    public void addCustomerTransaction() throws IOException {
+    private static float addItemToTransaction(float cost, List items) throws IOException {
+        boolean itemFound = false;
+        CRUD crud = new CRUD();
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        boolean itemFound = false;
-        float cost = 0f; //Dummy value.
-        CRUD crud = new CRUD();
-        Session s = HibernateUtil.getSessionFactory().openSession();
-        s.beginTransaction();
-        List items = s.createQuery("From Stock").list();
-        s.getTransaction().commit();
-
-        System.out.println("Please enter the first item of the transaction.");
+        System.out.println("Please enter the next item of the transaction.");
         String transactionItemString = reader.readLine();
         for (Stock stock : (Iterable<Stock>) items) {
             if (transactionItemString.equals(stock.getName())) {
@@ -71,26 +64,51 @@ public class UserMenu implements EPOS {
                     cost += stock.getSell_price();
                     crud.update(stock.getId(), "stock_remaining_stock", Integer.toString(stock.getRemaining_stock() - 1));
 
-                    System.out.println("Please enter the amount of money given:");
-                    String moneyGivenInput = reader.readLine() + "f";
-                    float moneyGiven = Float.parseFloat(moneyGivenInput);
-
-                    System.out.println("Please enter the amount of change given back:");
-                    String changeGivenInput = reader.readLine() + "f";
-                    float changeGiven = Float.parseFloat(changeGivenInput);
-
-                    Transaction newTransaction = new Transaction(cost, moneyGiven, changeGiven);
-                    newTransaction.addCustomerTransaction();
-                    newTransaction.generateReceipt();
                 } else {
                     System.out.println("ITEM " + stock.getName() + " OUT OF STOCK.");
                 }
+
+                if (!itemFound) {
+                    System.out.println("ITEM " + transactionItemString + " NOT FOUND.");
+                }
+            }
+        }
+        return cost;
+    }
+
+    @Override
+    public void addCustomerTransaction() throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        boolean end = false;
+        String checkForEnd;
+        float cost = 0f; //Dummy value.
+        Session s = HibernateUtil.getSessionFactory().openSession();
+
+        s.beginTransaction();
+        List items = s.createQuery("From Stock").list();
+        while (!end){
+            cost = addItemToTransaction(cost, items);
+            System.out.println("Would you like to add another item to this transaction? (y/n)");
+            checkForEnd = reader.readLine().toLowerCase();
+            if (checkForEnd.equals("n")){
+                end = true;
             }
         }
 
-        if (!itemFound) {
-            System.out.println("ITEM " + transactionItemString + " NOT FOUND.");
-        }
+        System.out.println("Please enter the amount of money given:");
+        String moneyGivenInput = reader.readLine() + "f";
+        float moneyGiven = Float.parseFloat(moneyGivenInput);
+
+        System.out.println("Please enter the amount of change given back:");
+        String changeGivenInput = reader.readLine() + "f";
+        float changeGiven = Float.parseFloat(changeGivenInput);
+
+        Transaction newTransaction = new Transaction(cost, moneyGiven, changeGiven);
+        newTransaction.addCustomerTransaction();
+        newTransaction.generateReceipt();
+
+        s.getTransaction().commit();
+        s.close();
     }
     @Override
     public void generateReceipt() {
@@ -115,6 +133,7 @@ public class UserMenu implements EPOS {
                 break;
             case "c":
                 updateItem();
+                break;
             default:
                 System.out.println("Error - Please only enter 'a', 'b' or 'c'.");
                 updateStock();
@@ -137,7 +156,13 @@ public class UserMenu implements EPOS {
         category = categoryReader.readLine();
         System.out.println("Is the item perishable (true or false): ");
         BufferedReader perishReader = new BufferedReader(new InputStreamReader(System.in));
-        perishable = Boolean.parseBoolean(perishReader.readLine());
+        perishableString = perishReader.readLine();
+        while(!perishableString.equals("true") && !perishableString.equals("false")){
+            System.out.println("Enter only true or false: ");
+            BufferedReader perishStringReader = new BufferedReader(new InputStreamReader(System.in));
+            perishableString = perishStringReader.readLine();
+        }
+        perishable = Boolean.parseBoolean(perishableString);
         System.out.println("Item's cost: ");
         BufferedReader costReader = new BufferedReader(new InputStreamReader(System.in));
         cost = Float.parseFloat(costReader.readLine() + "f");
