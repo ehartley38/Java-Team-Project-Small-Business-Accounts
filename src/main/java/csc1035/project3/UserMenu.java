@@ -89,6 +89,7 @@ public class UserMenu implements EPOS {
                 break;
             case "c":
                 updateItem();
+                break;
             default:
                 System.out.println("Error - Please only enter 'a', 'b' or 'c'.");
                 updateStock();
@@ -111,7 +112,13 @@ public class UserMenu implements EPOS {
         category = categoryReader.readLine();
         System.out.println("Is the item perishable (true or false): ");
         BufferedReader perishReader = new BufferedReader(new InputStreamReader(System.in));
-        perishable = Boolean.parseBoolean(perishReader.readLine());
+        perishableString = perishReader.readLine();
+        while(!perishableString.equals("true") && !perishableString.equals("false")){
+            System.out.println("Enter only true or false: ");
+            BufferedReader perishStringReader = new BufferedReader(new InputStreamReader(System.in));
+            perishableString = perishStringReader.readLine();
+        }
+        perishable = Boolean.parseBoolean(perishableString);
         System.out.println("Item's cost: ");
         BufferedReader costReader = new BufferedReader(new InputStreamReader(System.in));
         cost = Float.parseFloat(costReader.readLine() + "f");
