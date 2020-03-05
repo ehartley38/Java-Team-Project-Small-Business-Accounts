@@ -1,13 +1,7 @@
 package csc1035.project3;
 
 import org.hibernate.Session;
-
-import javax.persistence.*;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.DataInputStream;
+import java.io.*;
 import java.util.List;
 
 public class UserMenu implements EPOS {
@@ -62,7 +56,7 @@ public class UserMenu implements EPOS {
                 itemFound = true;
                 if (stock.getRemaining_stock() > 0) {
                     cost += stock.getSell_price();
-                    crud.update(stock.getId(), "stock_remaining_stock", Integer.toString(stock.getRemaining_stock() - 1));
+                    crud.updateById(stock.getId(), "stock_remaining_stock", Integer.toString(stock.getRemaining_stock() - 1));
 
                 } else {
                     System.out.println("ITEM " + stock.getName() + " OUT OF STOCK.");
@@ -218,6 +212,6 @@ public class UserMenu implements EPOS {
         BufferedReader newValueReader = new BufferedReader(new InputStreamReader(System.in));
         newValue = newValueReader.readLine();
         CRUD crud = new CRUD();
-        crud.update(ID, column, newValue);
+        crud.updateById(ID, column, newValue);
     }
 }
