@@ -105,7 +105,7 @@ public class CRUD {
         session.getTransaction().commit();
     }
 
-    public void deleteById(int id) {
+    public void delete(int id) {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -125,33 +125,15 @@ public class CRUD {
         }
     }
 
-    public void deleteByName(String name) {
+    public int getSid(String name) {
+        int id = 0;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             List items = session.createQuery("FROM Stock").list();
             for (Stock stock : (Iterable<Stock>) items) {
                 if (stock.getName().equals(name))
-                    session.delete(stock);
-            }
-            session.getTransaction().commit();
-            System.out.println(name + " was deleted from stock table.");
-        } catch (HibernateException e) {
-            if (session!=null) session.getTransaction().rollback();
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-    }
-
-    public void getSid(String name) {
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            List items = session.createQuery("FROM Stock").list();
-            for (Stock stock : (Iterable<Stock>) items) {
-                if (stock.getName().equals(name))
-                    System.out.println("The item's ID: " + stock.getId());
+                    id = stock.getId();
             }
             session.getTransaction().commit();
         } catch (HibernateException e) {
@@ -160,6 +142,7 @@ public class CRUD {
         } finally {
             session.close();
         }
+        return id;
     }
 
     public boolean checkDuplicates(String name) {
