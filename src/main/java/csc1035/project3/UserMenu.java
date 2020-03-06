@@ -87,7 +87,7 @@ public class UserMenu implements EPOS {
                 itemFound = true;
                 if (stock.getRemaining_stock() > 0) {
                     cost += stock.getSell_price();
-                    crud.updateById(stock.getId(), "stock_remaining_stock", Integer.toString(stock.getRemaining_stock() - 1));
+                    crud.update(stock.getId(), "stock_remaining_stock", Integer.toString(stock.getRemaining_stock() - 1));
 
                 } else {
                     System.out.println("ITEM " + stock.getName() + " OUT OF STOCK.");
@@ -214,14 +214,15 @@ public class UserMenu implements EPOS {
                 BufferedReader nameReader = new BufferedReader(new InputStreamReader(System.in));
                 name = nameReader.readLine();
                 CRUD nameCrud = new CRUD();
-                nameCrud.deleteByName(name);
+                ID = nameCrud.getSid(name);
+                nameCrud.delete(ID);
                 break;
             case "id":
                 System.out.println("Enter ID of an item that you want to remove: ");
                 BufferedReader idReader = new BufferedReader(new InputStreamReader(System.in));
                 ID = Integer.parseInt(idReader.readLine());
                 CRUD idCrud = new CRUD();
-                idCrud.deleteById(ID);
+                idCrud.delete(ID);
                 break;
             default:
                 System.out.println("You can only choose between name and id");
@@ -230,12 +231,28 @@ public class UserMenu implements EPOS {
     }
 
     private void updateItem() throws IOException{
-        int ID;
+        int ID = 0;
         String column;
         String newValue;
-        System.out.println("Item's ID: ");
-        BufferedReader idReader = new BufferedReader(new InputStreamReader(System.in));
-        ID = Integer.parseInt(idReader.readLine());
+        String option;
+        String name;
+        System.out.println("Do you want to update an item using name or id?: ");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        option = reader.readLine().toLowerCase();
+        if(option.equals("name")){
+            System.out.println("Item's name: ");
+            BufferedReader nameReader = new BufferedReader(new InputStreamReader(System.in));
+            name = nameReader.readLine();
+            CRUD crud = new CRUD();
+            ID = crud.getSid(name);
+        } else if (option.equals("id")){
+            System.out.println("Item's ID: ");
+            BufferedReader idReader = new BufferedReader(new InputStreamReader(System.in));
+            ID = Integer.parseInt(idReader.readLine());
+        } else {
+            System.out.println("You can only choose between name and id");
+            updateItem();
+        }
         System.out.println("Enter the name of the column that you want to change: ");
         BufferedReader columnReader = new BufferedReader(new InputStreamReader(System.in));
         column = columnReader.readLine().toLowerCase();
@@ -243,6 +260,6 @@ public class UserMenu implements EPOS {
         BufferedReader newValueReader = new BufferedReader(new InputStreamReader(System.in));
         newValue = newValueReader.readLine();
         CRUD crud = new CRUD();
-        crud.updateById(ID, column, newValue);
+        crud.update(ID, column, newValue);
     }
 }
