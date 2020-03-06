@@ -56,7 +56,7 @@ public class UserMenu implements EPOS {
                 itemFound = true;
                 if (stock.getRemaining_stock() > 0) {
                     cost += stock.getSell_price();
-                    crud.updateById(stock.getId(), "stock_remaining_stock", Integer.toString(stock.getRemaining_stock() - 1));
+                    crud.update(stock.getId(), "stock_remaining_stock", Integer.toString(stock.getRemaining_stock() - 1));
 
                 } else {
                     System.out.println("ITEM " + stock.getName() + " OUT OF STOCK.");
@@ -183,14 +183,14 @@ public class UserMenu implements EPOS {
                 BufferedReader nameReader = new BufferedReader(new InputStreamReader(System.in));
                 name = nameReader.readLine();
                 CRUD nameCrud = new CRUD();
-                nameCrud.deleteByName(name);
+                //nameCrud.deleteByName(name);
                 break;
             case "id":
                 System.out.println("Enter ID of an item that you want to remove: ");
                 BufferedReader idReader = new BufferedReader(new InputStreamReader(System.in));
                 ID = Integer.parseInt(idReader.readLine());
                 CRUD idCrud = new CRUD();
-                idCrud.deleteById(ID);
+                idCrud.delete(ID);
                 break;
             default:
                 System.out.println("You can only choose between name and id");
@@ -212,6 +212,6 @@ public class UserMenu implements EPOS {
         BufferedReader newValueReader = new BufferedReader(new InputStreamReader(System.in));
         newValue = newValueReader.readLine();
         CRUD crud = new CRUD();
-        crud.updateById(ID, column, newValue);
+        crud.update(ID, column, newValue);
     }
 }
