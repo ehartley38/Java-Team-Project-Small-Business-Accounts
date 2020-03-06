@@ -2,8 +2,11 @@ package csc1035.project3;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+
+import javax.print.DocFlavor;
 import java.io.*;
 import java.util.List;
+import java.util.Scanner;
 
 public class UserMenu implements EPOS {
 
@@ -138,6 +141,15 @@ public class UserMenu implements EPOS {
     @Override
     public void generateReceipt() {
 
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Enter the ID of the transaction : ");
+        int num = scan.nextInt();
+        scan.close();
+
+        if (num > 0 ){
+            Transaction receipt = new Transaction();
+            receipt.generateReceipt(num);
+        }
     }
 
     @Override
