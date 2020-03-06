@@ -1,10 +1,13 @@
 package csc1035.project3;
 
 import javax.persistence.*;
+import java.lang.reflect.Array;
+import java.util.*;
 
 @Entity
 
 public class Stock {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +34,7 @@ public class Stock {
 
     public Stock(String name, String category,
                  boolean perishable, float cost, int remaining_stock, float sell_price) {
+
         this.name = name;
         this.category = category;
         this.perishable = perishable;

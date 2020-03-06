@@ -43,9 +43,10 @@ public class CRUD {
         }
     }
 
-    public void update(int id, String columnName, String newValue) {
+    public boolean update(int id, String columnName, String newValue) {
         session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
+        boolean invalidName = false;
         Stock item = (session.get(Stock.class, id));
         switch (columnName) {
             case "stock_category":
@@ -68,10 +69,12 @@ public class CRUD {
                 break;
             default:
                 System.out.println("Not a valid column name");
+                invalidName = true;
                 break;
         }
         session.update(item);
         session.getTransaction().commit();
+        return invalidName;
     }
 
     public void delete(int id) {

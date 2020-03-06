@@ -205,6 +205,8 @@ public class UserMenu implements EPOS {
         String newValue;
         String option;
         String name;
+        CRUD crud = new CRUD();
+        boolean invalid = true;
         System.out.println("Do you want to update an item using name or id?: ");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         option = reader.readLine().toLowerCase();
@@ -212,7 +214,6 @@ public class UserMenu implements EPOS {
             System.out.println("Item's name: ");
             BufferedReader nameReader = new BufferedReader(new InputStreamReader(System.in));
             name = nameReader.readLine();
-            CRUD crud = new CRUD();
             ID = crud.getSid(name);
         } else if (option.equals("id")){
             System.out.println("Item's ID: ");
@@ -222,13 +223,14 @@ public class UserMenu implements EPOS {
             System.out.println("You can only choose between name and id");
             updateItem();
         }
-        System.out.println("Enter the name of the column that you want to change: ");
-        BufferedReader columnReader = new BufferedReader(new InputStreamReader(System.in));
-        column = columnReader.readLine().toLowerCase();
-        System.out.println("Enter a new value: ");
-        BufferedReader newValueReader = new BufferedReader(new InputStreamReader(System.in));
-        newValue = newValueReader.readLine();
-        CRUD crud = new CRUD();
-        crud.update(ID, column, newValue);
+        while(invalid){
+            System.out.println("Enter the name of the column that you want to change: ");
+            BufferedReader columnReader = new BufferedReader(new InputStreamReader(System.in));
+            column = columnReader.readLine().toLowerCase();
+            System.out.println("Enter a new value: ");
+            BufferedReader newValueReader = new BufferedReader(new InputStreamReader(System.in));
+            newValue = newValueReader.readLine();
+            invalid = crud.update(ID, column, newValue);
+        }
     }
 }
