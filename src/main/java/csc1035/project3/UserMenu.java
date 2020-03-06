@@ -1,10 +1,13 @@
 package csc1035.project3;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import java.io.*;
 import java.util.List;
 
 public class UserMenu implements EPOS {
+
+    Session session;
 
     public void menu() throws IOException {
         String option;
@@ -41,6 +44,34 @@ public class UserMenu implements EPOS {
 
     @Override
     public void countStock() {
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            CRUD crud = new CRUD();
+            List items = session.createQuery("FROM Stock").list();
+
+            String leftAlignFormat = " |%-9s | %-18s | %-8s | %-16s | %-10s | %-9s | %-7s |%n ";
+
+            System.out.format(" +----------+--------------------+----------+------------------+------------+-----------+---------+%n");
+            System.out.format(" | Item ID  |      Category      |   Cost   |       Name       | Perishable | Remaining |  Price  |%n");
+            System.out.format(" +----------+--------------------+----------+------------------|------------+-----------+---------+%n");
+            for (Stock stock : (Iterable<Stock>) items) {
+                System.out.format(leftAlignFormat, Integer.toString(stock.getId()), stock.getCategory(),
+                        Float.toString(stock.getCost()), stock.getName(), "True",
+                        Integer.toString(stock.getRemaining_stock()), Float.toString(stock.getSell_price()));
+                System.out.format("+----------+--------------------+----------+------------------|------------+-----------+---------+%n");
+            }
+
+        } catch (HibernateException e) {
+            if (session!=null) session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+
+
+
 
     }
 
