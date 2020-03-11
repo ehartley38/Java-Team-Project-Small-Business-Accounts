@@ -140,7 +140,6 @@ public class UserMenu implements EPOS {
         Scanner scan = new Scanner(System.in);
         System.out.print("Enter the ID of the transaction : ");
         int num = scan.nextInt();
-        scan.close();
 
         if (num > 0 ){
             Transaction receipt = new Transaction();

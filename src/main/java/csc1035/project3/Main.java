@@ -13,7 +13,7 @@ public class Main {
         BufferedReader exitReader = new BufferedReader(new InputStreamReader(System.in));
         while(!exit){
             new UserMenu().menu();
-            System.out.println("Do you wish to continue?: ");
+            System.out.println("Do you wish to continue? (y/n): ");
             option = exitReader.readLine().toLowerCase();
             if(option.equals("n")){
                 exit = true;
