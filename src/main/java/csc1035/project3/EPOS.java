@@ -7,7 +7,7 @@ interface EPOS {
     /**
      * Displays all current stock to the user.
      */
-    void countStock() throws IOException;
+    void countStock();
 
     /**
      * Allows for a customer transaction of stock.
@@ -17,7 +17,7 @@ interface EPOS {
     /**
      * Produces a receipt of a transaction.
      */
-    void generateReceipt() throws IOException;
+    void generateReceipt();
 
     /**
      * Allows stock to be updated outside of a transaction.

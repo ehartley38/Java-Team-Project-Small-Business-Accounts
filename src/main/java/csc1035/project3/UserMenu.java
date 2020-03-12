@@ -52,7 +52,7 @@ public class UserMenu implements EPOS {
      * Displays Stock table to the user.
      */
     @Override
-    public void countStock() throws IOException{
+    public void countStock(){
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -77,7 +77,6 @@ public class UserMenu implements EPOS {
         } finally {
             session.close();
         }
-        menu();
 
     }
 
@@ -146,25 +145,22 @@ public class UserMenu implements EPOS {
 
         s.getTransaction().commit();
         s.close();
-        menu();
     }
 
     /**
     * Allows the user to input a transaction ID to generate a receipt.
      */
     @Override
-    public void generateReceipt()throws IOException{
+    public void generateReceipt() {
 
         Scanner scan = new Scanner(System.in);
         System.out.print("Enter the ID of the transaction : ");
         int num = scan.nextInt();
-        scan.close();
 
         if (num > 0 ){
             Transaction receipt = new Transaction();
             receipt.generateReceipt(num);
         }
-        menu();
     }
 
     /**
@@ -229,7 +225,6 @@ public class UserMenu implements EPOS {
         sell_price = Float.parseFloat(priceReader.readLine() + "f");
         CRUD crud = new CRUD();
         crud.create(name, category, perishable, cost, remaining_stock, sell_price);
-        menu();
         }
 
     private void removeItem() throws IOException{
@@ -259,7 +254,6 @@ public class UserMenu implements EPOS {
                 System.out.println("You can only choose between name and id");
                 removeItem();
         }
-        menu();
     }
 
     private void updateItem() throws IOException{
@@ -295,6 +289,5 @@ public class UserMenu implements EPOS {
             newValue = newValueReader.readLine();
             invalid = crud.update(ID, column, newValue);
         }
-        menu();
     }
 }
