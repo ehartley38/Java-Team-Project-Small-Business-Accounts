@@ -11,6 +11,16 @@ public class CRUD {
 
     Session session;
 
+    /**
+     * Creates a new item in the database
+     * @param name The name of the item you want to add
+     * @param category The category of the item you want to add
+     * @param perishable True if the item is perishable, false if it is not
+     * @param cost The cost of the item
+     * @param remaining_stock How much stock is left of the item
+     * @param sell_price How much you are selling the item for
+     * @return Nothing.
+     */
     public void create(String name, String category, boolean perishable, float cost, int remaining_stock, float sell_price) {
         Stock stockToAdd = new Stock(name, category, perishable, cost, remaining_stock, sell_price);
         session = HibernateUtil.getSessionFactory().openSession();
@@ -43,6 +53,13 @@ public class CRUD {
         }
     }
 
+    /**
+     * This method updates an item in the database with new information
+     * @param id The id of the item you want to update
+     * @param columnName The column name of the item you want to update
+     * @param newValue The new value you want to update the database with
+     * @return boolean invalidName returns true if the given column name doesn't exist
+     */
     public boolean update(int id, String columnName, String newValue) {
         session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
@@ -97,6 +114,11 @@ public class CRUD {
         }
     }
 
+    /**
+     * Returns the id of a given item in the database
+     * @param name The name of the item of which you want to find its id
+     * @return int Returns the id of the given item
+     */
     public int getSid(String name) {
         int id = 0;
         try {
@@ -117,6 +139,11 @@ public class CRUD {
         return id;
     }
 
+    /**
+     * Checks if the item you are trying to add already exists in the database
+     * @param name The name of the item you want to check duplicates for
+     * @return boolean Return true if the item already exists in the database.
+     */
     public boolean checkDuplicates(String name) {
 
         List stock = session.createQuery("FROM Stock").list();

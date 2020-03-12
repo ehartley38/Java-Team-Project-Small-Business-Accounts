@@ -32,6 +32,16 @@ public class Stock {
     @Column(name = "stock_sell_price")
     private float sell_price;
 
+    /**
+     * The constructor for a stock item
+     * @param category Category of the item you wish to add
+     * @param cost cost of the item you wish to add
+     * @param name name of the item you wish to add
+     * @param perishable true if the item is perishable, false if it is not
+     * @param remaining_stock the amount of remaining stock left for the item
+     * @param sell_price The price you wish to sell the item for
+     * @return Nothing.
+     */
     public Stock(String name, String category,
                  boolean perishable, float cost, int remaining_stock, float sell_price) {
 
