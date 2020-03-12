@@ -61,6 +61,9 @@ public class Transaction {
         this.change_given = change_given;
     }
 
+    /**
+     * Allows for a customer transaction of stock.
+     */
     public void addCustomerTransaction() {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
@@ -75,6 +78,9 @@ public class Transaction {
         }
     }
 
+    /**
+     * Produces a receipt of a transaction when given a transaction ID.
+     */
     public void generateReceipt(int id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try{

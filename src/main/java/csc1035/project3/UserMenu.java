@@ -12,6 +12,9 @@ public class UserMenu implements EPOS {
 
     Session session;
 
+    /**
+     * Allows the user to choose which feature of the program they wish to use.
+     */
     public void menu() throws IOException {
         String option;
         System.out.println("Welcome to the Tricky Trinkets EPOS system.");
@@ -45,6 +48,9 @@ public class UserMenu implements EPOS {
         }
     }
 
+    /**
+     * Displays Stock table to the user.
+     */
     @Override
     public void countStock() throws IOException{
         try {
@@ -75,6 +81,9 @@ public class UserMenu implements EPOS {
 
     }
 
+    /**
+     * Adds an item from the stock table into a transaction to help calculate the total cost.
+     */
     private static float addItemToTransaction(float cost, List items) throws IOException {
         boolean itemFound = false;
         CRUD crud = new CRUD();
@@ -101,6 +110,9 @@ public class UserMenu implements EPOS {
         return cost;
     }
 
+    /**
+     * Presents the user with options to create a new Transaction.
+     */
     @Override
     public void addCustomerTransaction() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -136,6 +148,10 @@ public class UserMenu implements EPOS {
         s.close();
         menu();
     }
+
+    /**
+    * Allows the user to input a transaction ID to generate a receipt.
+     */
     @Override
     public void generateReceipt()throws IOException{
 
@@ -151,6 +167,9 @@ public class UserMenu implements EPOS {
         menu();
     }
 
+    /**
+     * Allows the user to add or remove an item from stock or update a current item already in stock.
+     */
     @Override
     public void updateStock() throws IOException{
         String option;

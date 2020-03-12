@@ -5,7 +5,7 @@ import java.io.IOException;
 interface EPOS {
 
     /**
-     * Displays all stock to the user.
+     * Displays all current stock to the user.
      */
     void countStock() throws IOException;
 
