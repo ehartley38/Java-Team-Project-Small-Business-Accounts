@@ -3,7 +3,6 @@ package csc1035.project3;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-import javax.print.DocFlavor;
 import java.io.*;
 import java.util.List;
 import java.util.Scanner;

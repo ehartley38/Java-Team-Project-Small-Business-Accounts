@@ -1,8 +1,6 @@
 package csc1035.project3;
 
 import javax.persistence.*;
-import java.lang.reflect.Array;
-import java.util.*;
 
 @Entity
 

@@ -1,10 +1,8 @@
 package csc1035.project3;
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity(name = "Transaction") // Table name
 public class Transaction {
@@ -80,6 +78,7 @@ public class Transaction {
 
     /**
      * Produces a receipt of a transaction when given a transaction ID.
+     * @param id A transaction ID passed into the table.
      */
     public void generateReceipt(int id) {
         Session session = HibernateUtil.getSessionFactory().openSession();

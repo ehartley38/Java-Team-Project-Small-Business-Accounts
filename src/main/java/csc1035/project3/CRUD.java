@@ -3,9 +3,7 @@ package csc1035.project3;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class CRUD {
 
