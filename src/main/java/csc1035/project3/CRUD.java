@@ -17,7 +17,6 @@ public class CRUD {
      * @param cost The cost of the item
      * @param remaining_stock How much stock is left of the item
      * @param sell_price How much you are selling the item for
-     * @return Nothing.
      */
     public void create(String name, String category, boolean perishable, float cost, int remaining_stock, float sell_price) {
         Stock stockToAdd = new Stock(name, category, perishable, cost, remaining_stock, sell_price);

@@ -37,7 +37,6 @@ public class Stock {
      * @param perishable true if the item is perishable, false if it is not
      * @param remaining_stock the amount of remaining stock left for the item
      * @param sell_price The price you wish to sell the item for
-     * @return Nothing.
      */
     public Stock(String name, String category,
                  boolean perishable, float cost, int remaining_stock, float sell_price) {
