@@ -8,7 +8,6 @@ import java.util.*;
 
 public class Stock {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sid", updatable = false, nullable = false)

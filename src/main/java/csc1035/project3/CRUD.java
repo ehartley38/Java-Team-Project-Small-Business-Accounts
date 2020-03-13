@@ -34,7 +34,12 @@ public class CRUD {
         }
     }
 
-
+    /**
+     * Reads an information about an item from the database
+     * @param name The name of the item you want to read
+     * This code does not have any use currently;
+     * It can be used for future development
+     */
     public void read(String name) {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
@@ -94,6 +99,10 @@ public class CRUD {
         return invalidName;
     }
 
+    /**
+     * Deletes an item from the database
+     * @param id of the item you want to delete
+     */
     public void delete(int id) {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
